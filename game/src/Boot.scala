@@ -1,4 +1,4 @@
-import japgolly.scalajs.react.{ReactDOM, ScalaComponent}
+import japgolly.scalajs.react.ScalaComponent
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom.document
 

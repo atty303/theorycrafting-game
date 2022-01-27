@@ -15,6 +15,15 @@ export default defineConfig(({ command, mode }) => {
         { find: "@sjs", replacement: sjs },
       ],
     },
+    server: {
+      watch: {
+        ignored: [
+          function (_path) {
+            return !(_path.includes("fullOpt.dest") || _path.includes("fastOpt.dest"));
+          }
+        ]
+      }
+    },
     plugins: [react()],
   };
 });
