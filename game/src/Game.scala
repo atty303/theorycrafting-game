@@ -5,7 +5,7 @@ import org.scalajs.dom.document
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 
 @JSExportTopLevel("Game")
-object Boot {
+object Game {
   @JSExport
   def main(): Unit = {
     val HelloMessage = ScalaComponent
