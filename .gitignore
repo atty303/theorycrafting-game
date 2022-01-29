@@ -1,4 +1,7 @@
 .idea
+.metals
+.coursier
+.bloop
 node_modules
 .DS_Store
 dist

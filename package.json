@@ -6,6 +6,7 @@
     "dev": "stmux -w always -e ERROR -m beep,system -- [ \"npm run dev:mill\" .. \"npm run dev:vite\" ]",
     "dev:vite": "vite",
     "dev:mill": "mill -w game.fastOpt",
+    "serve": "( cd out/game/indigoBuild/dest && http-server -c-1 )",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
+    "http-server": "^14.1.0",
     "stmux": "^1.8.3",
     "vite": "^2.7.2"
   }
