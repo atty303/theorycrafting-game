@@ -15,11 +15,12 @@ import indigo.shared.temporal.Signal
 import indigo.shared.time.Seconds
 
 import scala.scalajs.js.annotation.JSExportTopLevel
+import indigo.shared.events.FrameTick
 
 val playerAssetName = AssetName("player")
 
 @JSExportTopLevel("IndigoGame")
-object Game extends IndigoSandbox[Unit, Unit] {
+object Game extends IndigoSandbox[Unit, Model] {
   val config: GameConfig = GameConfig(1024, 200, 60).withMagnification(2)
   val animations: Set[Animation] = Set.empty
   val assets: Set[AssetType] = Set(
@@ -33,19 +34,41 @@ object Game extends IndigoSandbox[Unit, Unit] {
       dice: Dice
   ): Outcome[Startup[Unit]] = Outcome(Startup.Success(()))
 
-  override def initialModel(startupData: Unit): Outcome[Unit] = Outcome(())
+  override def initialModel(startupData: Unit): Outcome[Model] =
+     Outcome(Model.initial())
 
   override def updateModel(
       context: FrameContext[Unit],
-      model: Unit
-  ): GlobalEvent => Outcome[Unit] = _ => Outcome(())
+      model: Model
+  ): GlobalEvent => Outcome[Model] = {
+    case FrameTick =>
+      Outcome(model.update(context.delta))
+    case _ =>
+      Outcome(model)
+  }
 
   override def present(
       context: FrameContext[Unit],
-      model: Unit
+      model: Model
   ): Outcome[SceneUpdateFragment] =
     Outcome(SceneUpdateFragment(
-      Graphic(Rectangle(0, 0, 38, 48), 1, Material.Bitmap(playerAssetName))
-        .moveTo(Signal.Linear(Seconds(10)).map(t => Point((t * 100).toInt, 0)).at(context.running))
+      Graphic(Rectangle(0, 0, 38, 48), 1, Material.Bitmap(playerAssetName)) +:
+      model.enemies.map { enemy =>
+        Graphic(Rectangle(0, 0, 38, 48), 1, Material.Bitmap(playerAssetName))
+        .moveTo(enemy.x.toInt, 0),
+      }
     ))
+}
+
+case class Model(enemies: List[Enemy]) {
+  def update(timeDelta: Seconds): Model =
+    this.copy(enemies = enemies.map(_.update(timeDelta)))
+}
+object Model {
+  def initial(): Model = Model(List(Enemy(500)))
+}
+
+case class Enemy(x: Double) {
+  def update(timeDelta: Seconds): Enemy =
+    this.copy(x = x - (timeDelta.toDouble * 10))
 }
