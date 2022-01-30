@@ -1,0 +1,127 @@
+{ "frames": [
+   {
+    "filename": "gothic-hero-run 0.gif",
+    "frame": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 1.gif",
+    "frame": { "x": 0, "y": 48, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 2.gif",
+    "frame": { "x": 0, "y": 96, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 3.gif",
+    "frame": { "x": 0, "y": 144, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 4.gif",
+    "frame": { "x": 0, "y": 192, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 5.gif",
+    "frame": { "x": 0, "y": 240, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 6.gif",
+    "frame": { "x": 0, "y": 288, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 7.gif",
+    "frame": { "x": 0, "y": 336, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 8.gif",
+    "frame": { "x": 0, "y": 384, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 9.gif",
+    "frame": { "x": 0, "y": 432, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 10.gif",
+    "frame": { "x": 0, "y": 480, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   },
+   {
+    "filename": "gothic-hero-run 11.gif",
+    "frame": { "x": 0, "y": 528, "w": 66, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 66, "h": 48 },
+    "sourceSize": { "w": 66, "h": 48 },
+    "duration": 70
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.32-x64",
+  "image": "gothic-hero-run.png",
+  "format": "I8",
+  "size": { "w": 66, "h": 576 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Tag", "from": 0, "to": 11, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

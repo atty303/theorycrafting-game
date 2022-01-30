@@ -1,0 +1,50 @@
+{ "frames": {
+   "gothic-hero-idle 0.gif": {
+    "frame": { "x": 0, "y": 0, "w": 38, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 38, "h": 48 },
+    "sourceSize": { "w": 38, "h": 48 },
+    "duration": 130
+   },
+   "gothic-hero-idle 1.gif": {
+    "frame": { "x": 38, "y": 0, "w": 38, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 38, "h": 48 },
+    "sourceSize": { "w": 38, "h": 48 },
+    "duration": 130
+   },
+   "gothic-hero-idle 2.gif": {
+    "frame": { "x": 76, "y": 0, "w": 38, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 38, "h": 48 },
+    "sourceSize": { "w": 38, "h": 48 },
+    "duration": 130
+   },
+   "gothic-hero-idle 3.gif": {
+    "frame": { "x": 114, "y": 0, "w": 38, "h": 48 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 38, "h": 48 },
+    "sourceSize": { "w": 38, "h": 48 },
+    "duration": 130
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.32-x64",
+  "image": "gothic-hero-idle.png",
+  "format": "I8",
+  "size": { "w": 152, "h": 48 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
