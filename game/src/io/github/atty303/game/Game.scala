@@ -1,6 +1,5 @@
 package io.github.atty303.game
 
-//import indigo._
 import indigo.IndigoSandbox
 import indigo.platform.assets.AssetCollection
 import indigo.shared.{FrameContext, Outcome, Startup}
@@ -28,18 +27,27 @@ import indigo.shared.formats.SpriteAndAnimations
 
 val playerAssetName = AssetName("player")
 
-case class Aseprite(name: String, path: String) {
-  def jsonAssetName  = AssetName(name + ":json")
-  def jsonAsset      = AssetType.Text(jsonAssetName, AssetPath(path + ".json"))
-  def imageAssetName = AssetName(name + ":image")
-  def imageAsset     = AssetType.Image(imageAssetName, AssetPath(path + ".png"))
-}
-
 case class StartupData(
-    playerSprite: SpriteAndAnimations
+    sprites: Map[AsepriteAsset, SpriteAndAnimations]
 )
 
-val player = Aseprite("player", "assets/gothic-hero-run")
+enum AsepriteAsset(name: String, path: String):
+  def jsonAssetName  = AssetName(name + ":json")
+  def jsonAsset      = AssetType.Text(jsonAssetName, AssetPath(s"assets/${path}.json"))
+  def imageAssetName = AssetName(name + ":image")
+  def imageAsset     = AssetType.Image(imageAssetName, AssetPath(s"assets/${path}.png"))
+
+  def load(dice: Dice, assetCollection: AssetCollection): Outcome[SpriteAndAnimations] =
+    (for {
+      json <- assetCollection.findTextDataByName(jsonAssetName).toRight("failed to load json")
+      aes  <- Json.asepriteFromJson(json).toRight("failed to parse json")
+      saa  <- aes.toSpriteAndAnimations(dice, imageAssetName).toRight("failed to create sprite")
+    } yield saa).fold(
+      e => Outcome.raiseError(new RuntimeException(s"asset load error: $e")),
+      x => Outcome(x)
+    )
+
+  case Player extends AsepriteAsset("player", "gothic-hero-run")
 
 @JSExportTopLevel("IndigoGame")
 object Game extends IndigoDemo[Unit, StartupData, Model, Unit] {
@@ -49,10 +57,8 @@ object Game extends IndigoDemo[Unit, StartupData, Model, Unit] {
     val r = BootResult.configOnly(GameConfig(1280, 800, 60).withMagnification(2))
     Outcome(
       r.addAssets(
-        AssetType.Image(playerAssetName, AssetPath("assets/gothic-hero-idle.gif")),
-        player.jsonAsset,
-        player.imageAsset
-      )
+        AssetType.Image(playerAssetName, AssetPath("assets/gothic-hero-idle.gif"))
+      ).addAssets(AsepriteAsset.values.toSet.flatMap(x => Set(x.jsonAsset, x.imageAsset)))
     )
   }
 
@@ -61,38 +67,21 @@ object Game extends IndigoDemo[Unit, StartupData, Model, Unit] {
       assetCollection: AssetCollection,
       dice: Dice
   ): Outcome[Startup[StartupData]] = {
-    val ss = List(player).map { aseprite =>
-      val v = for {
-        json   <- assetCollection
-          .findTextDataByName(aseprite.jsonAssetName)
-          .toRight("text")
-        sprite <- Json.asepriteFromJson(json).toRight("json")
-        saa    <- sprite
-          .toSpriteAndAnimations(dice, aseprite.imageAssetName)
-          .toRight("sprite")
-      } yield saa
-      v.fold(
-        e => Outcome.raiseError(new RuntimeException(s"asset error: $e")),
-        x => Outcome(aseprite -> x)
-      )
+    val ss = AsepriteAsset.values.toList.map { aseprite =>
+      aseprite.load(dice, assetCollection).map(aseprite -> _)
     }
 
     for {
       sprites <- Outcome.sequence(ss)
-    } yield {
-      Startup
-        .Success(StartupData(sprites.head._2))
-        .addAnimations(sprites.map(_._2.animations))
-    }
+    } yield Startup
+      .Success(StartupData(sprites.toMap))
+      .addAnimations(sprites.map(_._2.animations))
   }
 
   override def initialModel(startupData: StartupData): Outcome[Model] =
     Outcome(Model.initial(startupData))
 
-  override def initialViewModel(
-      startupData: StartupData,
-      model: Model
-  ): Outcome[Unit] =
+  override def initialViewModel(startupData: StartupData, model: Model): Outcome[Unit] =
     Outcome(())
 
   override def updateModel(
@@ -117,7 +106,7 @@ object Game extends IndigoDemo[Unit, StartupData, Model, Unit] {
     Outcome(
       SceneUpdateFragment(
         // Graphic(Rectangle(0, 0, 38, 48), 1, ) +:
-        context.startUpData.playerSprite.sprite.play()
+        context.startUpData.sprites(AsepriteAsset.Player).sprite.play()
           +:
             model.enemies.map { enemy =>
               Graphic(
@@ -140,7 +129,7 @@ case class Model(player: model.Player, enemies: List[Enemy]) {
 }
 object Model                                                 {
   def initial(startUpData: StartupData): Model = Model(
-    player = model.Player(startUpData.playerSprite, model.DefaultAttack.init),
+    player = model.Player(startUpData.sprites(AsepriteAsset.Player), model.DefaultAttack.init),
     enemies = List(Enemy(500))
   )
 }
