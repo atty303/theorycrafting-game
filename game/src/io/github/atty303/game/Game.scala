@@ -47,7 +47,7 @@ enum AsepriteAsset(name: String, path: String):
       x => Outcome(x)
     )
 
-  case Player extends AsepriteAsset("player", "gothic-hero-run")
+  case Player extends AsepriteAsset("player", "gothic-hero")
 
 @JSExportTopLevel("IndigoGame")
 object Game extends IndigoDemo[Unit, StartupData, Model, Unit] {
@@ -103,21 +103,20 @@ object Game extends IndigoDemo[Unit, StartupData, Model, Unit] {
       model: Model,
       viewModel: Unit
   ): Outcome[SceneUpdateFragment] =
-    Outcome(
-      SceneUpdateFragment(
-        // Graphic(Rectangle(0, 0, 38, 48), 1, ) +:
-        context.startUpData.sprites(AsepriteAsset.Player).sprite.play()
-          +:
-            model.enemies.map { enemy =>
-              Graphic(
-                Rectangle(0, 0, 38, 48),
-                1,
-                Material.Bitmap(playerAssetName)
-              )
-                .moveTo(enemy.x.toInt, 0),
-            }
-      )
-    )
+    for {
+      suf <- ModelView.draw(model)
+    } yield suf
+
+    // Outcome(
+    //   SceneUpdateFragment(
+    // context.startUpData.sprites(AsepriteAsset.Player).sprite.play()
+    // +:
+    //   model.enemies.map { enemy =>
+    //     Graphic(Rectangle(0, 0, 38, 48), 1, Material.Bitmap(playerAssetName))
+    //       .moveTo(enemy.x.toInt, 0),
+    //   }
+    //   )
+    // )
 }
 
 case class Model(player: model.Player, enemies: List[Enemy]) {
@@ -127,9 +126,13 @@ case class Model(player: model.Player, enemies: List[Enemy]) {
         player <- player.update(timeDelta)(e)
       } yield this.copy(player = player, enemies = enemies.map(_.update(timeDelta)))
 }
-object Model                                                 {
+
+object ModelView:
+  def draw(m: Model): Outcome[SceneUpdateFragment] = model.PlayerView.draw(m.player)
+
+object Model {
   def initial(startUpData: StartupData): Model = Model(
-    player = model.Player(startUpData.sprites(AsepriteAsset.Player), model.DefaultAttack.init),
+    player = model.Player.initial(startUpData.sprites(AsepriteAsset.Player)),
     enemies = List(Enemy(500))
   )
 }

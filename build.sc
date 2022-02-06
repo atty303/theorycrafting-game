@@ -17,7 +17,8 @@ object game extends ScalaJSModule with MillIndigo {
   override def ivyDeps = Agg(
     ivy"io.indigoengine::indigo::0.11.0",
     ivy"io.indigoengine::indigo-extras::0.11.0",
-    ivy"io.indigoengine::indigo-json-circe::0.11.0"
+    ivy"io.indigoengine::indigo-json-circe::0.11.0",
+    ivy"com.lihaoyi::pprint::0.7.0"
   )
 
   def buildGame() = T.command {
