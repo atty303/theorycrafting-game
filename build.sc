@@ -5,7 +5,7 @@ import mill.scalalib._
 import $ivy.`io.indigoengine::mill-indigo:0.11.0`, millindigo._
 
 object game extends ScalaJSModule with MillIndigo {
-  def scalaVersion = "3.1.0"
+  def scalaVersion   = "3.1.1"
   def scalaJSVersion = "1.8.0"
 
   val gameAssetsDirectory: os.Path = os.pwd / "assets"
@@ -17,8 +17,7 @@ object game extends ScalaJSModule with MillIndigo {
   override def ivyDeps = Agg(
     ivy"io.indigoengine::indigo::0.11.0",
     ivy"io.indigoengine::indigo-extras::0.11.0",
-    ivy"io.indigoengine::indigo-json-circe::0.11.0",
-    ivy"com.github.japgolly.scalajs-react::core::2.0.1"
+    ivy"io.indigoengine::indigo-json-circe::0.11.0"
   )
 
   def buildGame() = T.command {
