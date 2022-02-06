@@ -46,7 +46,7 @@ object Game extends IndigoDemo[Unit, StartupData, Model, Unit] {
   val eventFilters: EventFilters = EventFilters.AllowAll
 
   override def boot(flags: Map[String, String]): Outcome[BootResult[Unit]] = {
-    val r = BootResult.configOnly(GameConfig(1024, 300, 60).withMagnification(2))
+    val r = BootResult.configOnly(GameConfig(1280, 800, 60).withMagnification(2))
     Outcome(
       r.addAssets(
         AssetType.Image(playerAssetName, AssetPath("assets/gothic-hero-idle.gif")),
