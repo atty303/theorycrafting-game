@@ -1,32 +1,47 @@
 package io.github.atty303.game.model
 
-import indigo.*
+import indigo._
 import indigoextras.datatypes.DecreaseTo
 import indigo.shared.events.GlobalEvent
+import io.github.atty303.game.Pulse
+import indigo.shared.materials.Material.Bitmap
 
-final case class Player(saa: SpriteAndAnimations, skill: DefaultAttack) {
-  def update(dt: Seconds): GlobalEvent => Outcome[Player] =
-    case e =>
-      for {
-        skill <- skill.update(dt)(e)
-      } yield this.copy(skill = skill)
+final case class Player(saa: Map[CycleLabel, Clip[Bitmap]], skill: DefaultAttack) {
+  def update(gameTime: GameTime, timeDelta: Seconds): GlobalEvent => Outcome[Player] = { case e =>
+    for {
+      skill <- skill.update(gameTime, timeDelta)(e)
+    } yield this.copy(skill = skill)
+  }
 }
 
-object Player:
-  def initial(playerSprite: SpriteAndAnimations): Player =
-    val a = playerSprite.animations.cycles.find(_.label == CycleLabel("Attack")).map { cycle =>
-      cycle.lastFrameAdvance + cycle.frames.map(_.duration).toList.reduce(_ + _)
+object Player {
+  def initial(playerSprite: Map[CycleLabel, Clip[Bitmap]]): Player = {
+    val a = playerSprite.get(CycleLabel("Attack")).map { clip =>
+      clip.sheet.frameCount.toDouble * clip.sheet.frameDuration.toDouble
     }
-    Player(playerSprite, DefaultAttack.initial(a.map(_.toSeconds).get))
+    Player(playerSprite, DefaultAttack.initial(a.map(Seconds(_)).get))
+  }
+}
 
-object PlayerView:
-  def draw(player: Player): Outcome[SceneUpdateFragment] =
-    DefaultAttackView.draw(player)
+object PlayerView {
+  def draw(player: Player, skillActivated: Pulse): Outcome[SceneUpdateFragment] =
+    DefaultAttackView.draw(player, skillActivated)
+}
 
-final case class DefaultAttack(actionTime: Seconds, cooldown: Cooldown, actionCooldown: Cooldown) {
-  def update(timeDelta: Seconds): GlobalEvent => Outcome[DefaultAttack] =
+final case class DefaultAttack(
+    actionTime: Seconds,
+    cooldown: Cooldown,
+    actionCooldown: Cooldown,
+    actionAt: GameTime
+) {
+  def update(gameTime: GameTime, timeDelta: Seconds): GlobalEvent => Outcome[DefaultAttack] = {
     case DefaultAttack.Events.Ready =>
-      Outcome(this.copy(actionCooldown = Cooldown(actionTime, DefaultAttack.Events.Done).reset()))
+      Outcome(
+        this.copy(
+          actionCooldown = Cooldown(actionTime, DefaultAttack.Events.Done).reset(),
+          actionAt = gameTime
+        )
+      )
     case DefaultAttack.Events.Done  =>
       Outcome(this.copy(cooldown = cooldown.reset()))
     case e @ FrameTick              =>
@@ -36,26 +51,30 @@ final case class DefaultAttack(actionTime: Seconds, cooldown: Cooldown, actionCo
       } yield this.copy(cooldown = cd, actionCooldown = acd)
     case _                          =>
       Outcome(this)
+  }
 }
 
-object DefaultAttack:
+object DefaultAttack {
   def initial(actionTime: Seconds): DefaultAttack = DefaultAttack(
     actionTime,
     Cooldown(Seconds(3), Events.Ready).reset(),
-    Cooldown(Seconds(0), Events.Done)
+    Cooldown(Seconds(0), Events.Done),
+    GameTime.zero
   )
 
-  enum Events extends GlobalEvent:
+  enum Events extends GlobalEvent {
     case Ready, Done
+  }
+}
 
 object DefaultAttackView:
-  def draw(player: Player): Outcome[SceneUpdateFragment] =
+  def draw(player: Player, b: Pulse): Outcome[SceneUpdateFragment] =
     Outcome(
       SceneUpdateFragment(
         if (player.skill.actionCooldown.isActive)
-          player.saa.sprite.changeCycle(CycleLabel("Attack")).play().jumpToFirstFrame()
+          player.saa(CycleLabel("Attack")).playOnce(player.skill.actionAt.running)
         else
-          player.saa.sprite.changeCycle(CycleLabel("Idle")).play()
+          player.saa(CycleLabel("Idle"))
       )
     )
 

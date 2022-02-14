@@ -55,7 +55,7 @@
    },
    {
     "filename": "gothic-hero #Idle 0.ase",
-    "frame": { "x": 0, "y": 48, "w": 96, "h": 48 },
+    "frame": { "x": 576, "y": 0, "w": 96, "h": 48 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 48 },
@@ -64,7 +64,7 @@
    },
    {
     "filename": "gothic-hero #Idle 1.ase",
-    "frame": { "x": 96, "y": 48, "w": 96, "h": 48 },
+    "frame": { "x": 672, "y": 0, "w": 96, "h": 48 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 48 },
@@ -73,7 +73,7 @@
    },
    {
     "filename": "gothic-hero #Idle 2.ase",
-    "frame": { "x": 192, "y": 48, "w": 96, "h": 48 },
+    "frame": { "x": 768, "y": 0, "w": 96, "h": 48 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 48 },
@@ -82,7 +82,7 @@
    },
    {
     "filename": "gothic-hero #Idle 3.ase",
-    "frame": { "x": 96, "y": 48, "w": 96, "h": 48 },
+    "frame": { "x": 864, "y": 0, "w": 96, "h": 48 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 48 },
@@ -92,14 +92,14 @@
  ],
  "meta": {
   "app": "https://www.aseprite.org/",
-  "version": "1.2.32-x64",
+  "version": "1.3-beta11-x64",
   "image": "gothic-hero.png",
   "format": "I8",
-  "size": { "w": 576, "h": 96 },
+  "size": { "w": 960, "h": 48 },
   "scale": "1",
   "frameTags": [
-   { "name": "Attack", "from": 0, "to": 5, "direction": "forward" },
-   { "name": "Idle", "from": 6, "to": 9, "direction": "forward" }
+   { "name": "Attack", "from": 0, "to": 5, "direction": "forward", "color": "#000000ff" },
+   { "name": "Idle", "from": 6, "to": 9, "direction": "forward", "color": "#000000ff" }
   ],
   "layers": [
    { "name": "Layer", "opacity": 255, "blendMode": "normal" }

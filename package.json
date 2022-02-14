@@ -6,7 +6,7 @@
     "dev": "stmux -w always -e ERROR -m beep,system -- [ \"npm run dev:mill\" .. \"npm run dev:vite\" ]",
     "dev:vite": "vite",
     "dev:mill": "mill -w game.fastOpt",
-    "serve": "( cd out/game/indigoBuild/dest && http-server -c-1 )",
+    "serve": "( cd out/game/indigoBuild.dest && http-server -c-1 )",
     "build": "vite build",
     "preview": "vite preview"
   },
