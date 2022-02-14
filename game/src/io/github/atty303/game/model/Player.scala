@@ -5,7 +5,6 @@ import indigoextras.datatypes.DecreaseTo
 import indigo.shared.events.GlobalEvent
 
 final case class Player(saa: SpriteAndAnimations, skill: DefaultAttack) {
-  IndigoLogger.debugOnce(pprint(saa).plainText)
   def update(dt: Seconds): GlobalEvent => Outcome[Player] =
     case e =>
       for {
@@ -27,10 +26,8 @@ object PlayerView:
 final case class DefaultAttack(actionTime: Seconds, cooldown: Cooldown, actionCooldown: Cooldown) {
   def update(timeDelta: Seconds): GlobalEvent => Outcome[DefaultAttack] =
     case DefaultAttack.Events.Ready =>
-      IndigoLogger.debug("default attack is ready")
       Outcome(this.copy(actionCooldown = Cooldown(actionTime, DefaultAttack.Events.Done).reset()))
     case DefaultAttack.Events.Done  =>
-      IndigoLogger.debug("default attack is done")
       Outcome(this.copy(cooldown = cooldown.reset()))
     case e @ FrameTick              =>
       for {
@@ -56,7 +53,7 @@ object DefaultAttackView:
     Outcome(
       SceneUpdateFragment(
         if (player.skill.actionCooldown.isActive)
-          player.saa.sprite.changeCycle(CycleLabel("Attack")).play()
+          player.saa.sprite.changeCycle(CycleLabel("Attack")).play().jumpToFirstFrame()
         else
           player.saa.sprite.changeCycle(CycleLabel("Idle")).play()
       )
